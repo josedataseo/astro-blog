@@ -1,17 +1,17 @@
 ---
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const pathname = Astro.url.pathname;
 
 const NAV_LINKS = [
-  { href: `${base}`, label: "Inicio" },
-  { href: `${base}blog`, label: "Blog" },
-  { href: `${base}about`, label: "Sobre Nosotros" },
+  { href: `${base}/`, label: "Inicio" },
+  { href: `${base}/blog`, label: "Blog" },
+  { href: `${base}/about`, label: "Sobre Nosotros" },
 ] as const;
 ---
 
 <header class="bg-primary text-white">
   <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-    <a href={base} class="text-xl font-bold tracking-tight">AstroBlog</a>
+    <a href={`${base}/`} class="text-xl font-bold tracking-tight">AstroBlog</a>
     <ul class="flex gap-6">
       {
         NAV_LINKS.map(({ href, label }) => {
