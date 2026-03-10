@@ -35,6 +35,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Wake up Strapi (Render free tier)
+        run: |
+          for i in 1 2 3 4 5; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.STRAPI_URL }}/api/articles" || echo "000")
+            echo "Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "Strapi is awake!"
+              break
+            fi
+            sleep 15
+          done
+
       - name: Build Astro
         run: pnpm build
         env:
