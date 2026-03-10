@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BlogCard from "../components/BlogCard.astro";
+import { getArticles, getStrapiImageUrl } from "../lib/strapi";
+
+let articles: Awaited<ReturnType<typeof getArticles>> = [];
+let error = false;
+
+try {
+  const all = await getArticles();
+  articles = all.slice(0, 3);
+} catch {
+  error = true;
+}
+---
+
+<BaseLayout title="Inicio — AstroBlog">
+  <!-- Hero -->
+  <section class="bg-primary text-white py-20">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        Bienvenido a AstroBlog
+      </h1>
+      <p class="text-lg text-blue-200 mb-8 max-w-2xl mx-auto">
+        Un blog construido con Astro y Strapi. Contenido rápido, estático y
+        moderno.
+      </p>
+      <a
+        href="/blog"
+        class="inline-block bg-accent text-slate-900 font-semibold px-6 py-3 rounded-lg hover:bg-amber-400 transition-colors"
+      >
+        Ver el Blog
+      </a>
+    </div>
+  </section>
+
+  <!-- Últimos artículos -->
+  <section class="max-w-5xl mx-auto px-4 py-16">
+    <h2 class="text-2xl font-bold mb-8">Últimos artículos</h2>
+
+    {
+      error && (
+        <p class="text-red-600">
+          No se pudo conectar con Strapi. Asegurate de que esté corriendo en
+          localhost:1337.
+        </p>
+      )
+    }
+
+    {
+      !error && articles.length === 0 && (
+        <p class="text-slate-500">
+          No hay artículos publicados todavía. Creá uno desde Strapi.
+        </p>
+      )
+    }
+
+    {
+      articles.length > 0 && (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articles.map((article) => (
+            <BlogCard
+              title={article.title}
+              slug={article.slug}
+              description={article.description}
+              coverUrl={
+                article.cover ? getStrapiImageUrl(article.cover.url) : undefined
+              }
+              publishedAt={article.publishedAt}
+              author={article.author ?? undefined}
+            />
+          ))}
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

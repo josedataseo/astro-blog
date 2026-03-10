@@ -1,0 +1,73 @@
+---
+import type { GetStaticPaths } from "astro";
+import { marked } from "marked";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getArticles,
+  getArticleBySlug,
+  getStrapiImageUrl,
+} from "../../lib/strapi";
+
+export const getStaticPaths = (async () => {
+  const articles = await getArticles();
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+  }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const article = await getArticleBySlug(slug);
+
+if (!article) {
+  return Astro.redirect("/blog");
+}
+
+const htmlContent = await marked(article.content);
+
+const coverUrl = article.cover
+  ? getStrapiImageUrl(article.cover.url)
+  : undefined;
+
+const formattedDate = new Date(article.publishedAt).toLocaleDateString(
+  "es-ES",
+  {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+);
+---
+
+<BaseLayout
+  title={`${article.title} — AstroBlog`}
+  description={article.description}
+  ogImage={coverUrl}
+>
+  <article class="max-w-3xl mx-auto px-4 py-16">
+    <a
+      href="/blog"
+      class="inline-block text-primary hover:underline mb-6 text-sm"
+    >
+      &larr; Volver al blog
+    </a>
+
+    {
+      coverUrl && (
+        <img
+          src={coverUrl}
+          alt={article.cover?.alternativeText ?? article.title}
+          class="w-full rounded-lg mb-8 shadow-md"
+        />
+      )
+    }
+
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">{article.title}</h1>
+      <p class="text-secondary text-sm">
+        {formattedDate}{article.author && ` — ${article.author}`}
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none" set:html={htmlContent} />
+  </article>
+</BaseLayout>

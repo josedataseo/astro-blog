@@ -1,0 +1,38 @@
+---
+const pathname = Astro.url.pathname;
+
+const NAV_LINKS = [
+  { href: "/", label: "Inicio" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "Sobre Nosotros" },
+] as const;
+---
+
+<header class="bg-primary text-white">
+  <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold tracking-tight">AstroBlog</a>
+    <ul class="flex gap-6">
+      {
+        NAV_LINKS.map(({ href, label }) => {
+          const isActive =
+            href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(href);
+          return (
+            <li>
+              <a
+                href={href}
+                class:list={[
+                  "hover:text-accent transition-colors",
+                  isActive && "text-accent font-semibold",
+                ]}
+              >
+                {label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</header>

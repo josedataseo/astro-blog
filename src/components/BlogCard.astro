@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  description: string;
+  coverUrl?: string;
+  publishedAt: string;
+  author?: string;
+}
+
+const { title, slug, description, coverUrl, publishedAt, author } =
+  Astro.props;
+
+const formattedDate = new Date(publishedAt).toLocaleDateString("es-ES", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<a href={`/blog/${slug}`} class="group block">
+  <article
+    class="rounded-lg border border-slate-200 overflow-hidden shadow-sm transition-shadow group-hover:shadow-md"
+  >
+    {
+      coverUrl && (
+        <img
+          src={coverUrl}
+          alt={title}
+          class="w-full h-48 object-cover"
+          loading="lazy"
+        />
+      )
+    }
+    <div class="p-4">
+      <p class="text-xs text-secondary mb-1">
+        {formattedDate}{author && ` — ${author}`}
+      </p>
+      <h3
+        class="text-lg font-semibold text-slate-900 group-hover:text-primary transition-colors mb-2"
+      >
+        {title}
+      </h3>
+      <p class="text-sm text-slate-600 line-clamp-2">{description}</p>
+    </div>
+  </article>
+</a>

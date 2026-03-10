@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Sobre Nosotros — AstroBlog">
+  <section class="max-w-3xl mx-auto px-4 py-16">
+    <h1 class="text-3xl font-bold mb-6">Sobre Nosotros</h1>
+
+    <div class="prose prose-slate max-w-none">
+      <p class="text-lg text-slate-600 mb-4">
+        Este proyecto es un blog estático construido con
+        <strong>Astro</strong> como frontend y <strong>Strapi v5</strong> como
+        CMS headless. El contenido se genera en tiempo de build (SSG), lo que
+        significa que las páginas son ultra rápidas.
+      </p>
+
+      <h2 class="text-xl font-semibold mt-8 mb-4">Stack Tecnológico</h2>
+      <ul class="list-disc list-inside text-slate-600 space-y-2">
+        <li><strong>Astro 5</strong> — Framework web para sitios estáticos</li>
+        <li><strong>Strapi v5</strong> — CMS headless con API REST</li>
+        <li><strong>Tailwind CSS v4</strong> — Utilidades CSS</li>
+        <li><strong>TypeScript</strong> — Tipado estricto</li>
+        <li><strong>Marked</strong> — Renderizado de Markdown</li>
+      </ul>
+
+      <h2 class="text-xl font-semibold mt-8 mb-4">Contacto</h2>
+      <p class="text-slate-600">
+        Si tenés alguna pregunta o sugerencia, escribinos a
+        <a
+          href="mailto:hola@astroblog.dev"
+          class="text-primary hover:underline"
+        >
+          hola@astroblog.dev
+        </a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
