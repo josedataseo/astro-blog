@@ -22,7 +22,7 @@ if (!article) {
   return Astro.redirect(`${import.meta.env.BASE_URL.replace(/\/$/, "")}/blog`);
 }
 
-const htmlContent = await marked(article.content);
+const htmlContent = article.content ? await marked(article.content) : "";
 
 const coverUrl = article.cover
   ? getStrapiImageUrl(article.cover.url)
