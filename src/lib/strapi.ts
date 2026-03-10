@@ -1,4 +1,4 @@
-import { STRAPI_URL } from "astro:env/server";
+import { STRAPI_URL, STRAPI_TOKEN } from "astro:env/server";
 
 // --- Types ---
 
@@ -64,7 +64,12 @@ async function fetchFromStrapi<T>(
     }
   }
 
-  const response = await fetch(url.toString());
+  const headers: Record<string, string> = {};
+  if (STRAPI_TOKEN) {
+    headers["Authorization"] = `Bearer ${STRAPI_TOKEN}`;
+  }
+
+  const response = await fetch(url.toString(), { headers });
 
   if (!response.ok) {
     throw new Error(

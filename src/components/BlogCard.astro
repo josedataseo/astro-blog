@@ -18,7 +18,7 @@ const formattedDate = new Date(publishedAt).toLocaleDateString("es-ES", {
 });
 ---
 
-<a href={`/blog/${slug}`} class="group block">
+<a href={`${import.meta.env.BASE_URL}blog/${slug}`} class="group block">
   <article
     class="rounded-lg border border-slate-200 overflow-hidden shadow-sm transition-shadow group-hover:shadow-md"
   >

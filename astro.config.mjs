@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://josedataseo.github.io",
+  base: "/astro-blog",
   vite: {
     plugins: [tailwindcss()],
   },
@@ -14,9 +16,14 @@ export default defineConfig({
         access: "secret",
         default: "http://localhost:1337",
       }),
+      STRAPI_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
     },
   },
   image: {
-    domains: ["localhost"],
+    domains: ["localhost", "strapi-blog-mhpy.onrender.com"],
   },
 });
